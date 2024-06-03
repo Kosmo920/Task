@@ -3,19 +3,38 @@ const url = "https://rwl.artport.pro/commercialAgent/hs/CarrWorkApp/VagonInfo";
 async function fetchVagons(){
     const response = await fetch(url);
     const {Vagons} = await response.json();
-
-    const vagonCards = Vagons.map(vagon => {
-        const vagonCard = document.createElement('div');
-        vagonCard.innerHTML = 
-        "<p>Vagon Number:" + vagon.VagonNumber + "</p><p>Vagon Type:" + vagon.VagonType + "</p><p>Cargo Name:" + vagon.CargoName + "</p><p>Owner Name:" + vagon.OwnerName + "</p><p>Departure Station Name:" + vagon.DepartureStationName +"</p>";
-        return vagonCard;
-    });
-
-    const card = document.getElementById('cards');
-
-    vagonCards.forEach(vagonCard => {
-        card.appendChild(vagonCard);
-    })
+    return Vagons;
 }
 
-fetchVagons();
+async function displayVagons(vagons){
+    const card = document.getElementById('cards');
+    card.innerHTML = '';
+    const vagonCards = vagons.map(vagon => {
+        const vagonCard = document.createElement('div');
+        vagonCard.innerHTML = 
+            "<p>Vagon Number: " + vagon.VagonNumber + "</p>" +
+            "<p>Vagon Type: " + vagon.VagonType + "</p>" +
+            "<p>Cargo Name: " + vagon.CargoName + "</p>" +
+            "<p>Owner Name: " + vagon.OwnerName + "</p>" +
+            "<p>Departure Station Name: " + vagon.DepartureStationName + "</p>";
+        return vagonCard;
+    });
+    
+    vagonCards.forEach(vagonCard => {
+        card.appendChild(vagonCard);
+    });
+}
+
+async function sortByNumber(){
+    const vagons = await fetchVagons();
+    vagons.sort((a, b) => a.VagonNumber - b.VagonNumber);
+    displayVagons(vagons);
+}
+
+async function sortByStation(){
+    const vagons = await fetchVagons();
+    vagons.sort((a, b) => a.DepartureStationName.localeCompare(b.DepartureStationName));
+    displayVagons(vagons);
+}
+
+fetchVagons().then(displayVagons);
