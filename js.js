@@ -9,6 +9,13 @@ async function fetchVagons() {
 async function displayVagons(vagons) {
     const card = document.getElementById('cards');
     card.innerHTML = '';
+    
+    const totalWeight = vagons.reduce((accumulator, vagon) => accumulator + vagon.WeightNet, 0);
+    const averageWeight = totalWeight / vagons.length;
+    const averageWeightElement = document.createElement('p');
+    averageWeightElement.innerHTML = "Average WeightNet: " + averageWeight;
+    card.appendChild(averageWeightElement);
+
     const vagonCards = vagons.map(vagon => {
         const vagonCard = document.createElement('div');
         vagonCard.innerHTML =
