@@ -1,4 +1,5 @@
 const fs = require('fs');
+const http = require('http');
 
 const arr = [ { a: 44556 }, {a: 56}, {a: 555},  {a: 6767}, {a: 878} ];
 
@@ -42,3 +43,15 @@ fs.unlink(maxName, (err) =>{
     if (err) throw err;
 })
 },2000)
+
+function getRandomNumber(){
+    return Math.floor(Math.random() * 17) - 8;
+}
+
+http.createServer((req, res) => {
+    if (req.url === '/random' && req.method === 'GET'){
+        const randomNumber = getRandomNumber();
+        res.write(JSON.stringify(randomNumber));
+        res.end();
+    }
+}).listen(8778);
