@@ -28,6 +28,11 @@ fileNames.forEach(fileName => {
             maxValue = value.a;
             maxName = fileName;
         }
+        if (value.a === 555) {
+            fs.writeFile(fileName,'{"a":777}', function(err){
+                if (err) throw err;
+            })
+        }
     });
 });
 
