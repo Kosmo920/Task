@@ -2,29 +2,29 @@ const fs = require('fs');
 
 const arr = [ { a: 44556 }, {a: 56}, {a: 555},  {a: 6767}, {a: 878} ];
 
-var stringValue1 = JSON.stringify(arr[0]);
-var stringValue2 = JSON.stringify(arr[1]);
-var stringValue3 = JSON.stringify(arr[2]);
-var stringValue4 = JSON.stringify(arr[3]);
-var stringValue5 = JSON.stringify(arr[4]);
+const fileNames = ['first.json', 'second.json', 'third.json', 'fourth.json', 'fifth.json'];
 
-fs.writeFile('first.json', stringValue1, function(err){
-    if (err) throw err;
+arr.forEach((item, index) => {
+    const stringValue = JSON.stringify(item);
+    fs.writeFile(fileNames[index], stringValue, function (err){
+        if (err) throw err;
+    });
 });
 
-fs.writeFile('second.json', stringValue2, function(err){
-    if (err) throw err;
+let minValue = Infinity;
+let minName = '';
+
+fileNames.forEach(fileName => {
+    fs.readFile(fileName, 'utf8', (err, data) => {
+        if (err) throw err;
+        const value = JSON.parse(data);
+        if (value.a < minValue) {
+            minValue = value.a;
+            minName = fileName;
+        }
+    });
 });
 
-fs.writeFile('third.json', stringValue3, function(err){
-    if (err) throw err;
-});
-
-fs.writeFile('fourth.json', stringValue4, function(err){
-    if (err) throw err;
-});
-
-fs.writeFile('fifth.json', stringValue5, function(err){
-    if (err) throw err;
-});
-
+setTimeout(() => {
+console.log(minName);
+},2000)
