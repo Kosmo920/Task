@@ -13,6 +13,8 @@ arr.forEach((item, index) => {
 
 let minValue = Infinity;
 let minName = '';
+let maxValue = 0;
+let maxName = '';
 
 fileNames.forEach(fileName => {
     fs.readFile(fileName, 'utf8', (err, data) => {
@@ -22,9 +24,16 @@ fileNames.forEach(fileName => {
             minValue = value.a;
             minName = fileName;
         }
+        if (value.a > maxValue) {
+            maxValue = value.a;
+            maxName = fileName;
+        }
     });
 });
 
 setTimeout(() => {
 console.log(minName);
+fs.unlink(maxName, (err) =>{
+    if (err) throw err;
+})
 },2000)
